@@ -1,3 +1,6 @@
+#This is an attempt to upgrade to Grails 3
+#This does not work yet
+
 #Grails JAX-RS Plugin
 
 A [Grails](http://grails.org) plugin that supports the development of RESTful web services based on the [Java API for RESTful Web Services](http://jcp.org/en/jsr/detail?id=311) (JSR 311: JAX-RS).
