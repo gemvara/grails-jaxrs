@@ -26,12 +26,13 @@ import org.grails.jaxrs.test.TestE
 import org.grails.jaxrs.test.TestH1B
 import org.grails.jaxrs.test.TestH2B
 import org.grails.jaxrs.test.TestH3B
+import spock.lang.Specification
 
 /**
  * @author Martin Krasser
  */
 @TestMixin(GrailsUnitTestMixin)
-class JaxrsClassesTests {
+class JaxrsClassesTests extends Specification {
 
     void testIsJaxrsResource() {
         assertTrue(JaxrsClasses.isJaxrsResource(TestA))

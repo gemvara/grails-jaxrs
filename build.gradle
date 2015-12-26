@@ -62,7 +62,8 @@ dependencies {
     provided "org.grails:grails-dependencies"
     provided 'javax.servlet:javax.servlet-api:3.1.0'
 
-    testCompile "org.grails:grails-plugin-testing"
+    compile "org.grails:grails-plugin-testing"
+    compile 'junit:junit:4.12'
 
     console "org.grails:grails-console"
 

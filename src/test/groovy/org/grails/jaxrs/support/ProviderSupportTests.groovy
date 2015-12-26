@@ -17,21 +17,21 @@ package org.grails.jaxrs.support
 
 import org.jaxrs.support.MessageBodyWriterSupport
 import org.jaxrs.support.ProviderSupport
-import grails.test.GrailsUnitTestCase
+import spock.lang.Specification
 
 import javax.ws.rs.core.MultivaluedMap
 
 /**
  * @author Martin Krasser
  */
-class ProviderSupportTests extends GrailsUnitTestCase {
+class ProviderSupportTestCase extends GroovyTestCase {
 
     ProviderSupport providerA
     ProviderSupport providerB
     ProviderSupport providerC
 
     protected void setUp() {
-        super.setUp()
+        super.setUp();
         providerA = new TestProviderA()
         providerB = new TestProviderB()
         providerC = new TestProviderC()

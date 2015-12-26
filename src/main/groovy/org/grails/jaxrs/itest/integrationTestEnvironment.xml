@@ -7,7 +7,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context 
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="jaxrsContext" class="org.jaxrs.web.JaxrsContext" />
+    <bean id="jaxrsContext" class="jaxrs.web.JaxrsContext" />
 
     <!--
         Find out why Jersey complains when scope="singleton" is 
@@ -15,8 +15,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         with Jersey and Spring 3.0.
      -->
 
-    <bean scope="singleton" class="org.jaxrs.provider.JSONWriter" />
-    <bean scope="singleton" class="org.jaxrs.provider.JSONReader">
+    <bean scope="singleton" class="jaxrs.provider.JSONWriter" />
+    <bean scope="singleton" class="jaxrs.provider.JSONReader">
         <property name="grailsApplication" ref="grailsApplication" />
     </bean>
     <bean scope="singleton" class="org.grails.jaxrs.provider.DomainObjectWriter">

@@ -1,15 +1,20 @@
 package org.grails.jaxrs.itest
 
-import grails.test.spock.IntegrationSpec
+import grails.test.mixin.integration.Integration
+import grails.transaction.Rollback
 import org.grails.jaxrs.JaxrsController
+import org.springframework.boot.test.IntegrationTest
 import spock.lang.Shared
+import spock.lang.Specification
 
 import javax.servlet.http.HttpServletResponse
 
 /**
  * @author Noam Y. Tenne
  */
-abstract class IntegrationTestSpec extends IntegrationSpec implements JaxRsIntegrationTest {
+@Integration
+@Rollback
+abstract class IntegrationTestSpec extends Specification implements JaxRsIntegrationTest {
 
     @Shared
     def grailsApplication
