@@ -4,6 +4,7 @@ It is *almost* working, I'm just having trouble getting it to process objects in
 
 # Problem #1
 
+~~
 When trying to process a non simple type (eg a custom class), like below:
 
 	@GET
@@ -42,6 +43,8 @@ I current get the Exception:
 	  com.sun.jersey.core.impl.provider.entity.XMLListElementProvider$General
 	  com.sun.jersey.json.impl.provider.entity.JSONRootElementProvider$General
 	  com.sun.jersey.json.impl.provider.entity.JSONListElementProvider$General
+
+~~ - Fixed using jackson-jaxrs providers.
 
 # Problem #2 
 

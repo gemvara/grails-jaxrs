@@ -146,6 +146,13 @@ dependencies {
         compile('javax.ws.rs:jsr311-api:1.1.1') {
             exclude module: 'junit'
         }
+
+        compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.4.5'
+        compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-xml-provider:2.4.5'
+        compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.4.5'
+        compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.4.5'
+
+        
 }
 
 task wrapper(type: Wrapper) {
