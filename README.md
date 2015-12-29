@@ -47,6 +47,10 @@ I current get the Exception:
 
 Integration tests do not work (need to be refactored for Grails 3).
 
+# Problem #3
+
+create-resource scripts don't work, you will need to create resources manually for now.
+
 #Grails JAX-RS Plugin
 
 A [Grails](http://grails.org) plugin that supports the development of RESTful web services based on the [Java API for RESTful Web Services](http://jcp.org/en/jsr/detail?id=311) (JSR 311: JAX-RS).
