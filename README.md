@@ -2,6 +2,55 @@
 
 It is *almost* working, I'm just having trouble getting it to process objects into JSON.
 
+# Problem #1
+
+When trying to process a non simple type (eg a custom class), like below:
+
+	@GET
+	@Produces(['application/json', 'application/xml'])
+	@Path("/1")
+	TestResult test1() {
+	  TestResult testResult = new TestResult();
+	  testResult.setFirstName("Donald");
+	   testResult.setLastName("Jackson");
+	   return testResult
+	}
+	
+I current get the Exception:
+
+	ERROR com.sun.jersey.spi.container.ContainerResponse - A message body writer for Java class sample3.TestResult, and Java type class sample3.TestResult, and MIME media type application/json was not found.
+	The registered message body writers compatible with the MIME media type are:
+	application/json ->
+	  com.sun.jersey.json.impl.provider.entity.JSONJAXBElementProvider$App
+	  com.sun.jersey.json.impl.provider.entity.JSONRootElementProvider$App
+	  com.sun.jersey.json.impl.provider.entity.JSONListElementProvider$App
+	*/* ->
+	  com.sun.jersey.core.impl.provider.entity.FormProvider
+	  com.sun.jersey.core.impl.provider.entity.StringProvider
+	  com.sun.jersey.core.impl.provider.entity.ByteArrayProvider
+	  com.sun.jersey.core.impl.provider.entity.FileProvider
+	  com.sun.jersey.core.impl.provider.entity.InputStreamProvider
+	  com.sun.jersey.core.impl.provider.entity.DataSourceProvider
+	  com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider$General
+	  com.sun.jersey.core.impl.provider.entity.ReaderProvider
+	  com.sun.jersey.core.impl.provider.entity.DocumentProvider
+	  com.sun.jersey.core.impl.provider.entity.StreamingOutputProvider
+	  com.sun.jersey.core.impl.provider.entity.SourceProvider$SourceWriter
+	  com.sun.jersey.server.impl.template.ViewableMessageBodyWriter
+	  com.sun.jersey.json.impl.provider.entity.JSONJAXBElementProvider$General
+	  com.sun.jersey.core.impl.provider.entity.XMLRootElementProvider$General
+	  com.sun.jersey.core.impl.provider.entity.XMLListElementProvider$General
+	  com.sun.jersey.json.impl.provider.entity.JSONRootElementProvider$General
+	  com.sun.jersey.json.impl.provider.entity.JSONListElementProvider$General
+
+# Problem #2 
+
+Integration tests do not work (need to be refactored for Grails 3).
+
+# Problem #3
+
+create-resource scripts don't work, you will need to create resources manually for now.
+
 #Grails JAX-RS Plugin
 
 A [Grails](http://grails.org) plugin that supports the development of RESTful web services based on the [Java API for RESTful Web Services](http://jcp.org/en/jsr/detail?id=311) (JSR 311: JAX-RS).
