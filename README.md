@@ -1,12 +1,12 @@
 # This is an attempt to Grails 3
 
-It is *almost* working, I'm just having trouble getting it to process objects into JSON.
+It is ~~*almost*~~ working, ~~I'm just having trouble getting it to process objects into JSON.~~
 
-# Problem #1
+# Problem #1 - FIXED.
 
-~~
 When trying to process a non simple type (eg a custom class), like below:
 
+```java
 	@GET
 	@Produces(['application/json', 'application/xml'])
 	@Path("/1")
@@ -16,7 +16,7 @@ When trying to process a non simple type (eg a custom class), like below:
 	   testResult.setLastName("Jackson");
 	   return testResult
 	}
-	
+```	
 I current get the Exception:
 
 	ERROR com.sun.jersey.spi.container.ContainerResponse - A message body writer for Java class sample3.TestResult, and Java type class sample3.TestResult, and MIME media type application/json was not found.
@@ -44,7 +44,9 @@ I current get the Exception:
 	  com.sun.jersey.json.impl.provider.entity.JSONRootElementProvider$General
 	  com.sun.jersey.json.impl.provider.entity.JSONListElementProvider$General
 
-~~ - Fixed using jackson-jaxrs providers.
+- 
+- 
+**Fixed using jackson-jaxrs providers**
 
 # Problem #2 
 
