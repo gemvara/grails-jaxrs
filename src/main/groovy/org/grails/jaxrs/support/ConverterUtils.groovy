@@ -22,6 +22,8 @@ import groovy.json.JsonSlurper
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.grails.databinding.xml.GPathResultMap
+import org.grails.web.converters.configuration.ConvertersConfigurationHolder;
+
 
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.MultivaluedMap
@@ -53,7 +55,7 @@ class ConverterUtils {
      * Grails application.
      */
     static String getDefaultXMLEncoding(GrailsApplication application) {
-        def encoding = getConverterConfiguration(XML).encoding
+        def encoding = ConvertersConfigurationHolder.getConverterConfiguration(XML).encoding
         if (!encoding) {
             return getDefaultEncoding(application)
         }
@@ -65,7 +67,7 @@ class ConverterUtils {
      * Grails application.
      */
     static String getDefaultJSONEncoding(GrailsApplication application) {
-        def encoding = getConverterConfiguration(JSON).encoding
+        def encoding = ConvertersConfigurationHolder.getConverterConfiguration(JSON).encoding
         if (!encoding) {
             return getDefaultEncoding(application)
         }
