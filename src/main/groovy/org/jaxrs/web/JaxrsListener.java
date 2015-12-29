@@ -20,15 +20,18 @@ import static org.jaxrs.web.JaxrsUtils.getRequiredJaxrsContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.annotation.Bean;
 
 /**
  * Initializes a Jersey servlet for request processing.
  *
  * @author Martin Krasser
  */
+
 public class JaxrsListener implements ServletContextListener {
 
     private static final Log LOG = LogFactory.getLog(JaxrsListener.class);
@@ -45,6 +48,7 @@ public class JaxrsListener implements ServletContextListener {
             jaxrsContext.init();
         } catch (ServletException e) {
             LOG.error("Initialization of JAX-RS context failed", e);
+            e.printStackTrace();
         }
     }
 }

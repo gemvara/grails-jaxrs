@@ -57,7 +57,9 @@ public class JaxrsContext {
      */
     public static final String SERVLET_NAME = "org.grails.jaxrs.servlet.name";
 
-    private volatile Servlet jaxrsServlet;
+    public static Servlet servletInstance = null;
+
+    private volatile Servlet jaxrsServlet = null;
     private volatile ServletContext jaxrsServletContext;
     private volatile JaxrsConfig jaxrsConfig;
     private volatile String jaxrsProviderName;
@@ -190,7 +192,7 @@ public class JaxrsContext {
 
         public void process(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            jaxrsServlet.service(request, response);
+                jaxrsServlet.service(request, response);
         }
     }
 

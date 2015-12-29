@@ -1,5 +1,6 @@
-#This is an attempt to upgrade to Grails 3
-#This does not work yet
+# This is an attempt to Grails 3
+
+It is *almost* working, I'm just having trouble getting it to process objects into JSON.
 
 #Grails JAX-RS Plugin
 

@@ -16,7 +16,7 @@ plugins {
     id "com.jfrog.bintray" version "1.2"
 }
 
-version "0.11"
+version "0.12"
 group "org.grails.plugins"
 
 apply plugin: 'maven-publish'
@@ -69,7 +69,7 @@ dependencies {
 
 
         String restletVersion = '2.1.4'
-        String jerseyVersion = '1.18.1'
+        String jerseyVersion = '1.19'
 
         compile "org.restlet.gae:org.restlet:$restletVersion"
 

@@ -19,6 +19,7 @@ import grails.converters.XML
 import grails.converters.JSON
 import grails.core.GrailsApplication
 import groovy.json.JsonSlurper
+import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.grails.databinding.xml.GPathResultMap
 
@@ -33,7 +34,7 @@ import javax.ws.rs.core.MultivaluedMap
  */
 class ConverterUtils {
 
-    static final LOG = LogFactory.getLog(ConverterUtils)
+    static LOG = null;//LogFactory.getLog(ConverterUtils)
 
     /**
      * Returns character encoding settings for the given Grails application.
@@ -109,5 +110,12 @@ class ConverterUtils {
      */
     static Map xmlToMap(InputStream input, String encoding) {
         new GPathResultMap(new XmlSlurper(false, false).parse(new InputStreamReader(input, encoding)))
+    }
+
+    private static Log getLogger() {
+        if(!LOG) {
+            LOG = LogFactory.getLog(ConverterUtils.class);
+        }
+        return LOG;
     }
 }

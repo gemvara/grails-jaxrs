@@ -1,8 +1,10 @@
-package org.jaxrs
+package grails.plugins.jaxrs
 
-import org.grails.web.servlet.mvc.GrailsDispatcherServlet
+import grails.plugins.Plugin
 import org.grails.jaxrs.generator.CodeGenerator
 import org.grails.jaxrs.provider.*
+import org.jaxrs.ProviderArtefactHandler
+import org.jaxrs.ResourceArtefactHandler
 import org.jaxrs.provider.JSONReader
 import org.jaxrs.provider.JSONWriter
 import org.jaxrs.provider.XMLReader
@@ -10,12 +12,14 @@ import org.jaxrs.provider.XMLWriter
 import org.jaxrs.web.JaxrsContext
 import org.jaxrs.web.JaxrsFilter
 import org.jaxrs.web.JaxrsListener
+import org.springframework.boot.context.embedded.FilterRegistrationBean
+import org.springframework.boot.context.embedded.ServletListenerRegistrationBean
+import org.springframework.core.Ordered
 
 import static org.jaxrs.web.JaxrsUtils.JAXRS_CONTEXT_NAME
 
-class JaxrsGrailsPlugin {
-    def groupId = "org.grails.plugins"
-    def version = "0.11"
+class JaxrsGrailsPlugin extends Plugin {
+    def version = "0.12"
     def grailsVersion = "3.0 > *"
     def pluginExcludes = [
             "grails-app/domain/*",
@@ -74,9 +78,10 @@ Apache Wink are likely to be added in upcoming versions of the plugin.
      * Adds the JaxrsFilter and JaxrsListener to the web application
      * descriptor.
      */
+
     def doWithWebDescriptor = { xml ->
 
-        def lastListener = xml.'listener'.iterator().toList().last()
+      /*  def lastListener = xml.'listener'.iterator().toList().last()
         lastListener + {
             'listener' {
                 'listener-class'(JaxrsListener.name)
@@ -95,7 +100,7 @@ Apache Wink are likely to be added in upcoming versions of the plugin.
         firstFilterMapping + {
             'filter-mapping' {
                 'filter-name'('jaxrsFilter')
-                'url-pattern'('/*')
+                'url-pattern'('*//*')
                 'dispatcher'('FORWARD')
                 'dispatcher'('REQUEST')
             }
@@ -118,17 +123,27 @@ Apache Wink are likely to be added in upcoming versions of the plugin.
                 }
                 'load-on-startup'('1')
             }
-        }
+        }*/
     }
 
     /**
      * Adds the JaxrsContext and plugin- and application-specific JAX-RS
      * resource and provider classes to the application context.
      */
-    def doWithSpring = {
+    Closure doWithSpring() {{ ->
+        println "Loading JAXRS..."
+        jaxrsListener(ServletListenerRegistrationBean) {
+            listener = bean(JaxrsListener)
+            order = Ordered.LOWEST_PRECEDENCE
+        }
+
+        jaxrsFilter(FilterRegistrationBean) {
+            filter = bean(JaxrsFilter)
+            order = Ordered.HIGHEST_PRECEDENCE
+        }
 
         // Configure the JAX-RS context
-        'jaxrsContext'(JaxrsContext)
+        "jaxrsContext"(JaxrsContext)
 
         // Configure default providers
         "${XMLWriter.name}"(XMLWriter)
@@ -156,28 +171,28 @@ Apache Wink are likely to be added in upcoming versions of the plugin.
 
         // Configure the resource code generator
         "${CodeGenerator.name}"(CodeGenerator)
-    }
+    }}
 
     /**
      * Updates application-specific JAX-RS resource and provider classes in
      * the application context.
      */
-    def onChange = { event ->
+    void onChange(event) {
 
         if (!event.ctx) {
             return
         }
 
-        if (application.isArtefactOfType(ResourceArtefactHandler.TYPE, event.source)) {
-            def resourceClass = application.addArtefact(ResourceArtefactHandler.TYPE, event.source)
+        if (grailsApplication.isArtefactOfType(ResourceArtefactHandler.TYPE, event.source)) {
+            def resourceClass = grailsApplication.addArtefact(ResourceArtefactHandler.TYPE, event.source)
             beans {
                 "${resourceClass.propertyName}"(resourceClass.clazz) { bean ->
-                    bean.scope = owner.getResourceScope(application)
+                    bean.scope = owner.getResourceScope(grailsApplication)
                     bean.autowire = true
                 }
             }.registerBeans(event.ctx)
-        } else if (application.isArtefactOfType(ProviderArtefactHandler.TYPE, event.source)) {
-            def providerClass = application.addArtefact(ProviderArtefactHandler.TYPE, event.source)
+        } else if (grailsApplication.isArtefactOfType(ProviderArtefactHandler.TYPE, event.source)) {
+            def providerClass = grailsApplication.addArtefact(ProviderArtefactHandler.TYPE, event.source)
             beans {
                 "${providerClass.propertyName}"(providerClass.clazz) { bean ->
                     bean.scope = 'singleton'
@@ -203,14 +218,14 @@ Apache Wink are likely to be added in upcoming versions of the plugin.
      * <code>org.grails.jaxrs.provider.name</code>. Default value is
      * <code>jersey</code>.
      */
-    def doWithApplicationContext = { applicationContext ->
-
+    void doWithApplicationContext() {
         def context = applicationContext.getBean(JAXRS_CONTEXT_NAME)
+
         def config = context.jaxrsConfig
 
-        context.jaxrsProviderName = getProviderName(application)
-        context.jaxrsProviderExtraPaths = getProviderExtraPaths(application)
-        context.jaxrsProviderInitParameters = getProviderInitParameters(application)
+        context.jaxrsProviderName = getProviderName(grailsApplication)
+        context.jaxrsProviderExtraPaths = getProviderExtraPaths(grailsApplication)
+        context.jaxrsProviderInitParameters = getProviderInitParameters(grailsApplication)
 
         config.reset()
         config.classes << XMLWriter
@@ -220,12 +235,14 @@ Apache Wink are likely to be added in upcoming versions of the plugin.
         config.classes << DomainObjectReader
         config.classes << DomainObjectWriter
 
-        application.getArtefactInfo('Resource').classesByName.values().each { clazz ->
+        grailsApplication.getArtefactInfo('Resource').classesByName.values().each { clazz ->
             config.classes << clazz
         }
-        application.getArtefactInfo('Provider').classesByName.values().each { clazz ->
+        grailsApplication.getArtefactInfo('Provider').classesByName.values().each { clazz ->
             config.classes << clazz
         }
+
+        context.refresh();
     }
 
     private String getResourceScope(application) {

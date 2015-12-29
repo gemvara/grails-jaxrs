@@ -17,8 +17,8 @@ package org.grails.jaxrs.itest
 
 import grails.core.GrailsApplication
 import grails.spring.BeanBuilder
-import grails.web.servlet.context.GrailsWebApplicationContext
 
+import org.springframework.context.ApplicationContext;
 import javax.servlet.ServletContextEvent
 import javax.servlet.ServletContextListener
 
@@ -47,6 +47,8 @@ class IntegrationTestEnvironment {
 
     private boolean autoDetectJaxrsClasses
 
+    public GrailsApplication grailsApplication
+
     IntegrationTestEnvironment(String contextConfigLocations, String jaxrsProviderName, List jaxrsClasses, boolean autoDetectJaxrsClasses) {
         this.contextConfigLocations = contextConfigLocations
         this.jaxrsProviderName = jaxrsProviderName
@@ -54,10 +56,10 @@ class IntegrationTestEnvironment {
         this.autoDetectJaxrsClasses = autoDetectJaxrsClasses
     }
 
+
     synchronized JaxrsContext getJaxrsContext() {
         if (!jaxrsContext) {
-            GrailsApplication application = Holders.grailsApplication
-            GrailsWebApplicationContext applicationContext = application.mainContext
+            ApplicationContext applicationContext = Holders.getApplicationContext();
 
             BeanBuilder beanBuilder = new BeanBuilder(applicationContext)
             beanBuilder.importBeans "org/grails/jaxrs/itest/integrationTestEnvironment.xml, ${contextConfigLocations}"

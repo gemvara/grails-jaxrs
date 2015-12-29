@@ -29,7 +29,7 @@ import org.grails.jaxrs.JaxrsClasses;
  */
 public class ProviderArtefactHandler extends ArtefactHandlerAdapter {
 
-    private static final Log LOG = LogFactory.getLog(ProviderArtefactHandler.class);
+    private static Log LOG = null; //LogFactory.getLog(ProviderArtefactHandler.class);
 
     public static final String TYPE = "Provider";
 
@@ -52,8 +52,15 @@ public class ProviderArtefactHandler extends ArtefactHandlerAdapter {
         }
         boolean match = JaxrsClasses.isJaxrsProvider(clazz);
         if (match) {
-            LOG.info("Detected JAX-RS provider: " + clazz.getName());
+            getLogger().info("Detected JAX-RS provider: " + clazz.getName());
         }
         return match;
+    }
+
+    private static Log getLogger() {
+        if(!LOG) {
+            LOG = LogFactory.getLog(ProviderArtefactHandler.class);
+        }
+        return LOG;
     }
 }

@@ -34,7 +34,7 @@ import org.springframework.core.io.FileSystemResource
  */
 class CodeGenerator {
 
-     private static final Log LOG = LogFactory.getLog(CodeGenerator)
+     private static Log LOG = null;// LogFactory.getLog(CodeGenerator)
 
      def engine = new SimpleTemplateEngine()
      def pluginDir
@@ -151,4 +151,11 @@ class CodeGenerator {
      private getResourceTemplateText(String template) {
          new FileSystemResource("${pluginDir}/src/templates/scaffolding/${template}").inputStream.getText()
      }
+
+    private static Log getLogger() {
+        if(!LOG) {
+            LOG = LogFactory.getLog(CodeGenerator.class);
+        }
+        return LOG;
+    }
 }
