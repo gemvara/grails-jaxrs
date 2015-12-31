@@ -1,8 +1,8 @@
 package grails.plugins.jaxrs
-
 import grails.plugins.Plugin
 import org.grails.jaxrs.generator.CodeGenerator
-import org.grails.jaxrs.provider.*
+import org.grails.jaxrs.provider.DomainObjectReader
+import org.grails.jaxrs.provider.DomainObjectWriter
 import org.jaxrs.ProviderArtefactHandler
 import org.jaxrs.ResourceArtefactHandler
 import org.jaxrs.provider.JSONReader
@@ -154,15 +154,17 @@ Apache Wink are likely to be added in upcoming versions of the plugin.
         "${DomainObjectWriter.name}"(DomainObjectWriter)
 
         // Configure application-provided resources
-        application.resourceClasses.each { rc ->
+        grailsApplication.resourceClasses.each { rc ->
+            println('wiring ' + rc.propertyName)
             "${rc.propertyName}"(rc.clazz) { bean ->
-                bean.scope = owner.getResourceScope(application)
+                bean.scope = owner.getResourceScope(grailsApplication)
                 bean.autowire = true
             }
         }
 
         // Configure application-provided providers
-        application.providerClasses.each { pc ->
+        grailsApplication.providerClasses.each { pc ->
+            println('wiring ' + pc.propertyName)
             "${pc.propertyName}"(pc.clazz) { bean ->
                 bean.scope = 'singleton'
                 bean.autowire = true
@@ -171,6 +173,7 @@ Apache Wink are likely to be added in upcoming versions of the plugin.
 
         // Configure the resource code generator
         "${CodeGenerator.name}"(CodeGenerator)
+        println "Loaded JAXRS"
     }}
 
     /**
