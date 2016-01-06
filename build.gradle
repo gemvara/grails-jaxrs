@@ -81,7 +81,8 @@ dependencies {
     // A modified version (with removed META-INF/services/javax.ws.rs.ext.RuntimeDelegate)
     // is contained in project's custom lib directory and repository. This is needed because of a bug described
     // at http://restlet.tigris.org/issues/show_bug.cgi?id=1251
-    compile group: 'org.restlet.gae',
+    compile files('lib/org.restlet.ext.jaxrs-noruntimedel-2.1.4.jar')
+    provided group: 'org.restlet.gae',
             name: 'org.restlet.ext.jaxrs-noruntimedel',
             version: restletVersion
 
